@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Taiana de Oliveira Gomes — Portfólio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --rose-deep:   #C2185B;
+      --rose-mid:    #E91E8C;
+      --rose-light:  #F48FB1;
+      --rose-pale:   #FCE4EC;
+      --rose-blush:  #FFF0F6;
+      --gold:        #D4AF37;
+      --dark:        #1a0a12;
+      --text:        #2d1320;
+      --text-light:  #7a4060;
+      --white:       #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--rose-blush);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* —— PARTICLES HERO —— */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 24px 80px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #1a0a12 0%, #3d0a2a 40%, #6d1b4e 70%, #C2185B 100%);
+    }
+
+    #hero canvas {
+      position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    }
+
+    .hero-content { position: relative; z-index: 1; }
+
+    .hero-eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--rose-light);
+      margin-bottom: 18px;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.3s forwards;
+    }
+
+    .hero-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 8vw, 6rem);
+      color: var(--white);
+      line-height: 1.05;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.5s forwards;
+    }
+
+    .hero-name span {
+      color: var(--rose-light);
+      font-style: italic;
+    }
+
+    .hero-tagline {
+      margin-top: 20px;
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      font-weight: 300;
+      color: rgba(255,255,255,0.75);
+      max-width: 520px;
+      line-height: 1.6;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.7s forwards;
+    }
+
+    .hero-cta {
+      margin-top: 36px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      background: transparent;
+      border: 1.5px solid var(--rose-light);
+      border-radius: 50px;
+      color: var(--rose-light);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: background 0.3s, color 0.3s;
+      opacity: 0;
+      animation: fadeUp 0.9s 0.9s forwards;
+    }
+    .hero-cta:hover { background: var(--rose-light); color: var(--dark); }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      z-index: 1;
+      animation: bounce 2s infinite;
+    }
+    .scroll-indicator svg { width: 20px; opacity: 0.5; }
+
+    /* —— REVEAL ANIMATION —— */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* —— SECTIONS —— */
+    section { padding: 80px 24px; max-width: 1000px; margin: 0 auto; }
+
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--rose-deep);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      color: var(--text);
+      line-height: 1.15;
+      margin-bottom: 48px;
+    }
+
+    /* —— ABOUT —— */
+    #about {
+      background: var(--white);
+      max-width: 100%;
+      padding: 80px 24px;
+    }
+
+    #about .inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .about-text p {
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: var(--text-light);
+      margin-bottom: 16px;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .stat-card {
+      background: var(--rose-blush);
+      border: 1px solid var(--rose-light);
+      border-radius: 16px;
+      padding: 24px 20px;
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .stat-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(194,24,91,0.12); }
+
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--rose-deep);
+      line-height: 1;
+    }
+    .stat-desc {
+      font-size: 0.78rem;
+      color: var(--text-light);
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+
+    /* —— TIMELINE —— */
+    #experience {
+      background: linear-gradient(180deg, var(--rose-blush) 0%, var(--rose-pale) 100%);
+      max-width: 100%;
+      padding: 80px 24px;
+    }
+    #experience .inner { max-width: 1000px; margin: 0 auto; }
+
+    .timeline {
+      position: relative;
+      padding-left: 32px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--rose-light), var(--rose-deep));
+    }
+
+    .tl-item {
+      position: relative;
+      margin-bottom: 44px;
+    }
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -28px;
+      top: 6px;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--rose-deep);
+      border: 2px solid var(--white);
+      box-shadow: 0 0 0 3px var(--rose-light);
+    }
+
+    .tl-item.current::before {
+      background: var(--gold);
+      box-shadow: 0 0 0 3px rgba(212,175,55,0.4);
+      animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { box-shadow: 0 0 0 3px rgba(212,175,55,0.4); }
+      50%       { box-shadow: 0 0 0 7px rgba(212,175,55,0.15); }
+    }
+
+    .tl-period {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--rose-deep);
+      margin-bottom: 4px;
+    }
+
+    .tl-item.current .tl-period {
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    .tl-badge {
+      display: inline-block;
+      background: linear-gradient(90deg, var(--gold), #f0c84a);
+      color: var(--dark);
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+    }
+
+    .tl-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .tl-role {
+      font-size: 0.85rem;
+      color: var(--rose-mid);
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .tl-desc {
+      font-size: 0.92rem;
+      color: var(--text-light);
+      line-height: 1.65;
+    }
+
+    /* —— SKILLS —— */
+    #skills {
+      background: var(--dark);
+      max-width: 100%;
+      padding: 80px 24px;
+    }
+    #skills .inner { max-width: 1000px; margin: 0 auto; }
+    #skills .section-title { color: var(--white); }
+    #skills .section-label { color: var(--rose-light); }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .skill-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(244,143,177,0.2);
+      border-radius: 16px;
+      padding: 24px 20px;
+      transition: background 0.3s, border-color 0.3s, transform 0.3s;
+    }
+    .skill-card:hover {
+      background: rgba(194,24,91,0.15);
+      border-color: var(--rose-light);
+      transform: translateY(-4px);
+    }
+
+    .skill-icon { font-size: 1.6rem; margin-bottom: 12px; }
+
+    .skill-name {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 6px;
+    }
+
+    .skill-bar-bg {
+      height: 4px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .skill-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--rose-light), var(--rose-mid));
+      border-radius: 4px;
+      width: 0%;
+      transition: width 1.2s ease;
+    }
+
+    /* —— FORMATION —— */
+    #formation {
+      background: var(--white);
+      max-width: 100%;
+      padding: 80px 24px;
+    }
+    #formation .inner { max-width: 1000px; margin: 0 auto; }
+
+    .formation-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    .form-card {
+      background: var(--rose-blush);
+      border-radius: 20px;
+      padding: 30px 24px;
+      border-left: 4px solid var(--rose-deep);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .form-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(194,24,91,0.14); }
+
+    .form-year {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--rose-deep);
+      margin-bottom: 8px;
+    }
+    .form-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .form-inst {
+      font-size: 0.85rem;
+      color: var(--text-light);
+    }
+
+    /* —— CONTACT —— */
+    #contact {
+      background: linear-gradient(135deg, #3d0a2a, #C2185B);
+      max-width: 100%;
+      padding: 100px 24px;
+      text-align: center;
+    }
+    #contact .section-label { color: var(--rose-light); }
+    #contact .section-title { color: var(--white); margin-bottom: 16px; }
+    #contact p { color: rgba(255,255,255,0.7); max-width: 480px; margin: 0 auto 40px; font-size: 1rem; line-height: 1.7; }
+
+    .contact-chips {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 50px;
+      padding: 12px 24px;
+      color: var(--white);
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .chip:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
+
+    /* —— FOOTER —— */
+    footer {
+      text-align: center;
+      padding: 28px;
+      background: var(--dark);
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.08em;
+    }
+
+    /* —— KEYFRAMES —— */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* —— RESPONSIVE —— */
+    @media (max-width: 680px) {
+      #about .inner { grid-template-columns: 1fr; gap: 40px; }
+      .stat-grid { grid-template-columns: 1fr 1fr; }
+      .timeline { padding-left: 24px; }
+    }
+
+    .flourish {
+      text-align: center;
+      font-size: 1.4rem;
+      color: var(--rose-light);
+      padding: 10px 0 30px;
+      letter-spacing: 0.4em;
+      opacity: 0.5;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ———————————————————— HERO ———————————————————— -->
+<section id="hero">
+  <canvas id="particles"></canvas>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Portfólio Profissional</p>
+    <h1 class="hero-name">Taiana de<br/><span>Oliveira Gomes</span></h1>
+    <p class="hero-tagline">Gestão · Liderança Feminina · Atendimento ao Cliente · Educação Física</p>
+    <a href="#about" class="hero-cta">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      Conheça minha trajetória
+    </a>
+  </div>
+  <div class="scroll-indicator">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </div>
+</section>
+
+<!-- ———————————————————— ABOUT ———————————————————— -->
+<section id="about">
+  <div class="inner">
+    <div class="about-text reveal">
+      <p class="section-label">Sobre mim</p>
+      <h2 class="section-title">Mulher que constrói, lidera e transforma</h2>
+      <p>Com mais de 15 anos de experiência em gestão, atendimento ao cliente e projetos sociais, Taiana é uma profissional versátil que soube se reinventar em cada etapa da carreira — sempre com excelência e humanidade.</p>
+      <p>De teleoperadora a sócia-gerente, de agente social a mediadora cultural — cada capítulo revela uma liderança genuína e comprometida com resultados reais.</p>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-card reveal">
+        <div class="stat-num">+15</div>
+        <div class="stat-desc">Anos de experiência profissional</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-num">6+</div>
+        <div class="stat-desc">Empresas e projetos liderados</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-num">3</div>
+        <div class="stat-desc">Negócios próprios gerenciados</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-num">♀</div>
+        <div class="stat-desc">Força feminina em cada projeto</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ———————————————————— EXPERIENCE ———————————————————— -->
+<section id="experience">
+  <div class="inner">
+    <p class="section-label reveal">Trajetória</p>
+    <h2 class="section-title reveal">Experiência Profissional</h2>
+
+    <div class="timeline">
+
+      <!-- ATUAL — em destaque -->
+      <div class="tl-item current reveal">
+        <span class="tl-badge">✦ Posição Atual</span>
+        <p class="tl-period">Em andamento</p>
+        <h3 class="tl-title">Casa de Cultura Maricá / Secretaria de Cultura</h3>
+        <p class="tl-role">Mediadora Cultural</p>
+        <p class="tl-desc">Ponte entre o público e a cultura local — promove acesso, difusão e valorização das expressões culturais do município de Maricá.</p>
+      </div>
+
+      <div class="tl-item reveal">
+        <p class="tl-period">2023 — 2026</p>
+        <h3 class="tl-title">Olimpo Cross / Poseidon no Olimpo</h3>
+        <p class="tl-role">Sócia & Gerente Geral</p>
+        <p class="tl-desc">Gestão completa: atendimento ao cliente, controle de equipamentos, financeiro e pagamento de professores.</p>
+      </div>
+
+      <div class="tl-item reveal">
+        <p class="tl-period">2021 — 2023</p>
+        <h3 class="tl-title">Mumbuca Futuro</h3>
+        <p class="tl-role">Agente Social</p>
+        <p class="tl-desc">Educadora popular, palestrante e auxiliar administrativa — contribuindo com comunidades e desenvolvimento social em Maricá.</p>
+      </div>
+
+      <div class="tl-item reveal">
+        <p class="tl-period">2017 — 2021</p>
+        <h3 class="tl-title">Mega Web</h3>
+        <p class="tl-role">Sócia-Gerente</p>
+        <p class="tl-desc">Gestão de loja de informática: atendimento, vendas, estoque, contratos, faturamento e pacote Office com total autonomia.</p>
+      </div>
+
+      <div class="tl-item reveal">
+        <p class="tl-period">2016 — 2017</p>
+        <h3 class="tl-title">Lotus Informática Ltda</h3>
+        <p class="tl-role">Gerente</p>
+        <p class="tl-desc">Liderança da equipe, cadastros, agendamentos, contratos, estoque e finanças do negócio.</p>
+      </div>
+
+      <div class="tl-item reveal">
+        <p class="tl-period">2013</p>
+        <h3 class="tl-title">Rocha & Simões</h3>
+        <p class="tl-role">Auxiliar Administrativo</p>
+        <p class="tl-desc">Documentação imobiliária, rescisão de contratos, vistorias, pagamentos e atendimento ao cliente.</p>
+      </div>
+
+      <div class="tl-item reveal">
+        <p class="tl-period">2012</p>
+        <h3 class="tl-title">Maluzin Materiais de Construção</h3>
+        <p class="tl-role">Secretária</p>
+        <p class="tl-desc">Atendimento ao cliente, controle de estoque, folha de ponto, pagamentos e faturamento.</p>
+      </div>
+
+      <div class="tl-item reveal">
+        <p class="tl-period">2010 — 2011</p>
+        <h3 class="tl-title">Fundação Prozee</h3>
+        <p class="tl-role">Entrevistadora Censitária</p>
+        <p class="tl-desc">Cadastros e acompanhamento de dados de pesca — projeto de mapeamento e impacto socioambiental.</p>
+      </div>
+
+      <div class="tl-item reveal">
+        <p class="tl-period">2009</p>
+        <h3 class="tl-title">TIVIT Terceirização e Serviços Tecnológicos</h3>
+        <p class="tl-role">Teleoperadora</p>
+        <p class="tl-desc">Início de uma carreira marcada pela excelência no relacionamento com o cliente — atendimento ativo e receptivo.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ———————————————————— SKILLS ———————————————————— -->
+<section id="skills">
+  <div class="inner">
+    <p class="section-label reveal">Competências</p>
+    <h2 class="section-title reveal">O que eu faço bem</h2>
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <div class="skill-icon">💼</div>
+        <div class="skill-name">Gestão Administrativa</div>
+        <div class="skill-bar-bg"><div class="skill-bar-fill" data-pct="95"></div></div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">🤝</div>
+        <div class="skill-name">Atendimento ao Cliente</div>
+        <div class="skill-bar-bg"><div class="skill-bar-fill" data-pct="98"></div></div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">💻</div>
+        <div class="skill-name">Pacote Office</div>
+        <div class="skill-bar-bg"><div class="skill-bar-fill" data-pct="85"></div></div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">📦</div>
+        <div class="skill-name">Controle de Estoque</div>
+        <div class="skill-bar-bg"><div class="skill-bar-fill" data-pct="90"></div></div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">📝</div>
+        <div class="skill-name">Elaboração de Contratos</div>
+        <div class="skill-bar-bg"><div class="skill-bar-fill" data-pct="80"></div></div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">🎙️</div>
+        <div class="skill-name">Comunicação & Palestras</div>
+        <div class="skill-bar-bg"><div class="skill-bar-fill" data-pct="88"></div></div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">💰</div>
+        <div class="skill-name">Faturamento & Financeiro</div>
+        <div class="skill-bar-bg"><div class="skill-bar-fill" data-pct="87"></div></div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">👑</div>
+        <div class="skill-name">Liderança de Equipes</div>
+        <div class="skill-bar-bg"><div class="skill-bar-fill" data-pct="92"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ———————————————————— FORMATION ———————————————————— -->
+<section id="formation">
+  <div class="inner">
+    <p class="section-label reveal">Formação</p>
+    <h2 class="section-title reveal">Educação & Cursos</h2>
+    <div class="formation-grid">
+      <div class="form-card reveal">
+        <p class="form-year">Em andamento</p>
+        <h3 class="form-title">Educação Física — Bacharelado</h3>
+        <p class="form-inst">UNOPAR (Nível Superior)</p>
+      </div>
+      <div class="form-card reveal">
+        <p class="form-year">2011</p>
+        <h3 class="form-title">Flight Attendant — Comissária de Bordo</h3>
+        <p class="form-inst">Cia do Ar</p>
+      </div>
+      <div class="form-card reveal">
+        <p class="form-year">Concluído</p>
+        <h3 class="form-title">Ensino Médio Completo</h3>
+        <p class="form-inst">CIEP 259 — Profª Maria do Amparo Rangel de Souza</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ———————————————————— CONTACT ———————————————————— -->
+<section id="contact">
+  <div class="reveal">
+    <p class="section-label">Contato</p>
+    <h2 class="section-title">Vamos conversar?</h2>
+    <p>Aberta a novas oportunidades e parcerias. Entre em contato e conheça mais sobre meu trabalho.</p>
+    <div class="contact-chips">
+      <a class="chip" href="mailto:taianatk@yahoo.com.br">
+        📧 taianatk@yahoo.com.br
+      </a>
+      <a class="chip" href="tel:+5521964181704">
+        📱 (21) 96418-1704
+      </a>
+      <span class="chip">
+        📍 Itaipuaçu, Maricá — RJ
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- ———————————————————— FOOTER ———————————————————— -->
+<footer>
+  © 2026 Taiana de Oliveira Gomes — Todos os direitos reservados
+</footer>
+
+<!-- ———————————————————— SCRIPTS ———————————————————— -->
+<script>
+  /* —— Particle Canvas —— */
+  (function () {
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+    let W, H, particles = [];
+
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = document.getElementById('hero').offsetHeight;
+    }
+
+    function random(min, max) { return Math.random() * (max - min) + min; }
+
+    function Particle() { this.reset(); }
+    Particle.prototype.reset = function () {
+      this.x  = random(0, W);
+      this.y  = random(0, H);
+      this.r  = random(1, 3);
+      this.vx = random(-0.3, 0.3);
+      this.vy = random(-0.5, -0.1);
+      this.a  = random(0.2, 0.7);
+    };
+    Particle.prototype.update = function () {
+      this.x += this.vx;
+      this.y += this.vy;
+      if (this.y < -10) this.reset();
+    };
+    Particle.prototype.draw = function () {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(244,143,177,${this.a})`;
+      ctx.fill();
+    };
+
+    function init() {
+      particles = [];
+      for (let i = 0; i < 70; i++) particles.push(new Particle());
+    }
+
+    function loop() {
+      ctx.clearRect(0, 0, W, H);
+      particles.forEach(p => { p.update(); p.draw(); });
+      requestAnimationFrame(loop);
+    }
+
+    window.addEventListener('resize', () => { resize(); init(); });
+    resize(); init(); loop();
+  })();
+
+  /* —— Scroll Reveal —— */
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  /* —— Skill Bar Animation —— */
+  const barObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.skill-bar-fill').forEach(bar => {
+          bar.style.width = bar.dataset.pct + '%';
+        });
+        barObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const skillsSection = document.getElementById('skills');
+  if (skillsSection) barObserver.observe(skillsSection);
+</script>
+</body>
+</html>
