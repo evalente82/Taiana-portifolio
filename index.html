@@ -123,16 +123,27 @@
     }
     .scroll-indicator svg { width: 20px; opacity: 0.5; }
 
-    /* —— REVEAL ANIMATION —— */
+    /* —— REVEAL ANIMATIONS —— */
     .reveal {
       opacity: 0;
       transform: translateY(40px);
       transition: opacity 0.7s ease, transform 0.7s ease;
     }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-60px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
     }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(60px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
 
     /* —— SECTIONS —— */
     section { padding: 80px 24px; max-width: 1000px; margin: 0 auto; }
@@ -206,73 +217,118 @@
       line-height: 1.4;
     }
 
-    /* —— TIMELINE —— */
+    /* —— TIMELINE ALTERNADO —— */
     #experience {
       background: linear-gradient(180deg, var(--rose-blush) 0%, var(--rose-pale) 100%);
       max-width: 100%;
       padding: 80px 24px;
     }
-    #experience .inner { max-width: 1000px; margin: 0 auto; }
+    #experience .inner { max-width: 1100px; margin: 0 auto; }
 
     .timeline {
       position: relative;
-      padding-left: 32px;
+      padding: 16px 0 8px;
     }
+
+    /* Linha vertical central */
     .timeline::before {
       content: '';
       position: absolute;
-      left: 7px;
+      left: 50%;
+      transform: translateX(-50%);
       top: 0; bottom: 0;
       width: 2px;
       background: linear-gradient(to bottom, var(--rose-light), var(--rose-deep));
+      z-index: 0;
     }
 
+    /* Item base */
     .tl-item {
       position: relative;
-      margin-bottom: 44px;
+      display: flex;
+      align-items: flex-start;
+      width: 50%;
+      margin-bottom: 52px;
     }
+
+    /* Item à DIREITA: dot no centro (esquerda do item), card, depois ano */
+    .tl-item.tl-right {
+      margin-left: 50%;
+      padding-left: 44px;
+      flex-direction: row;
+    }
+
+    /* Item à ESQUERDA: ano, depois card, dot no centro (direita do item) */
+    .tl-item.tl-left {
+      margin-right: 50%;
+      padding-right: 44px;
+      flex-direction: row-reverse;
+    }
+
+    /* Dot — usando ::before */
     .tl-item::before {
       content: '';
       position: absolute;
-      left: -28px;
-      top: 6px;
-      width: 12px; height: 12px;
+      top: 14px;
+      width: 14px; height: 14px;
       border-radius: 50%;
       background: var(--rose-deep);
       border: 2px solid var(--white);
-      box-shadow: 0 0 0 3px var(--rose-light);
+      box-shadow: 0 0 0 4px var(--rose-light);
+      z-index: 1;
     }
+    .tl-item.tl-right::before { left: -7px; }
+    .tl-item.tl-left::before  { right: -7px; }
 
+    /* Linha horizontal conectora — usando ::after */
+    .tl-item::after {
+      content: '';
+      position: absolute;
+      top: 20px;
+      height: 1px;
+      width: 30px;
+      background: linear-gradient(90deg, var(--rose-light), transparent);
+      z-index: 0;
+    }
+    .tl-item.tl-right::after { left: 7px; }
+    .tl-item.tl-left::after  { right: 7px; transform: scaleX(-1); }
+
+    /* Dot dourado para posição atual */
     .tl-item.current::before {
       background: var(--gold);
-      box-shadow: 0 0 0 3px rgba(212,175,55,0.4);
+      box-shadow: 0 0 0 4px rgba(212,175,55,0.35);
       animation: pulse-dot 2s infinite;
     }
 
     @keyframes pulse-dot {
-      0%, 100% { box-shadow: 0 0 0 3px rgba(212,175,55,0.4); }
-      50%       { box-shadow: 0 0 0 7px rgba(212,175,55,0.15); }
+      0%, 100% { box-shadow: 0 0 0 4px rgba(212,175,55,0.35); }
+      50%       { box-shadow: 0 0 0 8px rgba(212,175,55,0.12); }
     }
 
-    .tl-period {
-      font-size: 0.72rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--rose-deep);
-      margin-bottom: 4px;
+    /* Card box — conteúdo "por dentro" */
+    .tl-card-box {
+      flex: 1;
+      background: var(--white);
+      border-radius: 16px;
+      padding: 20px 22px;
+      border: 1px solid var(--rose-pale);
+      box-shadow: 0 4px 20px rgba(194,24,91,0.07);
+      transition: transform 0.3s, box-shadow 0.3s;
+      min-width: 0;
     }
-
-    .tl-item.current .tl-period {
-      color: var(--gold);
-      font-weight: 600;
+    .tl-card-box:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(194,24,91,0.14);
     }
+    .tl-item.tl-left .tl-card-box { text-align: right; }
 
+    /* Badge posição atual */
     .tl-badge {
       display: inline-block;
       background: linear-gradient(90deg, var(--gold), #f0c84a);
       color: var(--dark);
-      font-size: 0.65rem;
-      font-weight: 600;
+      font-size: 0.62rem;
+      font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       padding: 3px 10px;
@@ -282,24 +338,50 @@
 
     .tl-title {
       font-family: 'Playfair Display', serif;
-      font-size: 1.15rem;
+      font-size: 1.05rem;
       font-weight: 700;
       color: var(--text);
-      margin-bottom: 6px;
+      margin-bottom: 5px;
+      line-height: 1.3;
     }
 
     .tl-role {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: var(--rose-mid);
       font-weight: 500;
       margin-bottom: 8px;
     }
 
     .tl-desc {
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       color: var(--text-light);
-      line-height: 1.65;
+      line-height: 1.6;
     }
+
+    /* Ano "por fora" */
+    .tl-year-outer {
+      flex: 0 0 72px;
+      padding-top: 16px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--rose-deep);
+      line-height: 1.4;
+    }
+    .tl-item.tl-right .tl-year-outer {
+      padding-left: 0;
+      padding-right: 14px;
+      text-align: right;
+      order: -1; /* ano vai para antes do card no flex row */
+    }
+    .tl-item.tl-left .tl-year-outer {
+      padding-left: 14px;
+      padding-right: 0;
+      text-align: left;
+      order: -1; /* com row-reverse, fica na extremidade esquerda */
+    }
+    .tl-item.current .tl-year-outer { color: var(--gold); }
 
     /* —— SKILLS —— */
     #skills {
@@ -430,12 +512,19 @@
     /* —— FOOTER —— */
     footer {
       text-align: center;
-      padding: 28px;
+      padding: 32px 24px;
       background: var(--dark);
       font-size: 0.78rem;
       color: rgba(255,255,255,0.35);
-      letter-spacing: 0.08em;
+      letter-spacing: 0.06em;
+      line-height: 1.9;
     }
+    footer a {
+      color: var(--rose-light);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    footer a:hover { color: var(--white); }
 
     /* —— KEYFRAMES —— */
     @keyframes fadeUp {
@@ -448,19 +537,34 @@
     }
 
     /* —— RESPONSIVE —— */
-    @media (max-width: 680px) {
+    @media (max-width: 700px) {
       #about .inner { grid-template-columns: 1fr; gap: 40px; }
       .stat-grid { grid-template-columns: 1fr 1fr; }
-      .timeline { padding-left: 24px; }
-    }
 
-    .flourish {
-      text-align: center;
-      font-size: 1.4rem;
-      color: var(--rose-light);
-      padding: 10px 0 30px;
-      letter-spacing: 0.4em;
-      opacity: 0.5;
+      /* Timeline: colapsa para coluna única à direita */
+      .timeline::before { left: 16px; transform: none; }
+
+      .tl-item,
+      .tl-item.tl-right,
+      .tl-item.tl-left {
+        width: 100%;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 44px !important;
+        padding-right: 0 !important;
+        flex-direction: row !important;
+      }
+
+      .tl-item::before { left: 9px !important; right: auto !important; }
+      .tl-item::after  { left: 23px !important; right: auto !important; transform: none !important; }
+
+      .tl-item .tl-card-box { text-align: left !important; }
+      .tl-item .tl-year-outer {
+        display: none; /* year shown inside card on mobile */
+      }
+      .tl-card-box::before {
+        /* show year inline on mobile via title color hint */
+      }
     }
   </style>
 </head>
@@ -521,69 +625,95 @@
 
     <div class="timeline">
 
-      <!-- ATUAL — em destaque -->
-      <div class="tl-item current reveal">
-        <span class="tl-badge">✦ Posição Atual</span>
-        <p class="tl-period">Em andamento</p>
-        <h3 class="tl-title">Casa de Cultura Maricá / Secretaria de Cultura</h3>
-        <p class="tl-role">Mediadora Cultural</p>
-        <p class="tl-desc">Ponte entre o público e a cultura local — promove acesso, difusão e valorização das expressões culturais do município de Maricá.</p>
+      <!-- 1 → DIREITA (atual) -->
+      <div class="tl-item tl-right current reveal-right">
+        <div class="tl-card-box">
+          <span class="tl-badge">✦ Posição Atual</span>
+          <h3 class="tl-title">Casa de Cultura Maricá / Secretaria de Cultura</h3>
+          <p class="tl-role">Mediadora Cultural</p>
+          <p class="tl-desc">Ponte entre o público e a cultura local — promove acesso, difusão e valorização das expressões culturais do município de Maricá.</p>
+        </div>
+        <div class="tl-year-outer">Em<br/>andamento</div>
       </div>
 
-      <div class="tl-item reveal">
-        <p class="tl-period">2023 — 2026</p>
-        <h3 class="tl-title">Olimpo Cross / Poseidon no Olimpo</h3>
-        <p class="tl-role">Sócia & Gerente Geral</p>
-        <p class="tl-desc">Gestão completa: atendimento ao cliente, controle de equipamentos, financeiro e pagamento de professores.</p>
+      <!-- 2 → ESQUERDA -->
+      <div class="tl-item tl-left reveal-left">
+        <div class="tl-card-box">
+          <h3 class="tl-title">Olimpo Cross / Poseidon no Olimpo</h3>
+          <p class="tl-role">Sócia & Gerente Geral</p>
+          <p class="tl-desc">Gestão completa: atendimento ao cliente, controle de equipamentos, financeiro e pagamento de professores.</p>
+        </div>
+        <div class="tl-year-outer">2023<br/>2026</div>
       </div>
 
-      <div class="tl-item reveal">
-        <p class="tl-period">2021 — 2023</p>
-        <h3 class="tl-title">Mumbuca Futuro</h3>
-        <p class="tl-role">Agente Social</p>
-        <p class="tl-desc">Educadora popular, palestrante e auxiliar administrativa — contribuindo com comunidades e desenvolvimento social em Maricá.</p>
+      <!-- 3 → DIREITA -->
+      <div class="tl-item tl-right reveal-right">
+        <div class="tl-card-box">
+          <h3 class="tl-title">Mumbuca Futuro</h3>
+          <p class="tl-role">Agente Social</p>
+          <p class="tl-desc">Educadora popular, palestrante e auxiliar administrativa — contribuindo com comunidades e desenvolvimento social em Maricá.</p>
+        </div>
+        <div class="tl-year-outer">2021<br/>2023</div>
       </div>
 
-      <div class="tl-item reveal">
-        <p class="tl-period">2017 — 2021</p>
-        <h3 class="tl-title">Mega Web</h3>
-        <p class="tl-role">Sócia-Gerente</p>
-        <p class="tl-desc">Gestão de loja de informática: atendimento, vendas, estoque, contratos, faturamento e pacote Office com total autonomia.</p>
+      <!-- 4 → ESQUERDA -->
+      <div class="tl-item tl-left reveal-left">
+        <div class="tl-card-box">
+          <h3 class="tl-title">Mega Web</h3>
+          <p class="tl-role">Sócia-Gerente</p>
+          <p class="tl-desc">Gestão de loja de informática: atendimento, vendas, estoque, contratos, faturamento e pacote Office com total autonomia.</p>
+        </div>
+        <div class="tl-year-outer">2017<br/>2021</div>
       </div>
 
-      <div class="tl-item reveal">
-        <p class="tl-period">2016 — 2017</p>
-        <h3 class="tl-title">Lotus Informática Ltda</h3>
-        <p class="tl-role">Gerente</p>
-        <p class="tl-desc">Liderança da equipe, cadastros, agendamentos, contratos, estoque e finanças do negócio.</p>
+      <!-- 5 → DIREITA -->
+      <div class="tl-item tl-right reveal-right">
+        <div class="tl-card-box">
+          <h3 class="tl-title">Lotus Informática Ltda</h3>
+          <p class="tl-role">Gerente</p>
+          <p class="tl-desc">Liderança da equipe, cadastros, agendamentos, contratos, estoque e finanças do negócio.</p>
+        </div>
+        <div class="tl-year-outer">2016<br/>2017</div>
       </div>
 
-      <div class="tl-item reveal">
-        <p class="tl-period">2013</p>
-        <h3 class="tl-title">Rocha & Simões</h3>
-        <p class="tl-role">Auxiliar Administrativo</p>
-        <p class="tl-desc">Documentação imobiliária, rescisão de contratos, vistorias, pagamentos e atendimento ao cliente.</p>
+      <!-- 6 → ESQUERDA -->
+      <div class="tl-item tl-left reveal-left">
+        <div class="tl-card-box">
+          <h3 class="tl-title">Rocha & Simões</h3>
+          <p class="tl-role">Auxiliar Administrativo</p>
+          <p class="tl-desc">Documentação imobiliária, rescisão de contratos, vistorias, pagamentos e atendimento ao cliente.</p>
+        </div>
+        <div class="tl-year-outer">2013</div>
       </div>
 
-      <div class="tl-item reveal">
-        <p class="tl-period">2012</p>
-        <h3 class="tl-title">Maluzin Materiais de Construção</h3>
-        <p class="tl-role">Secretária</p>
-        <p class="tl-desc">Atendimento ao cliente, controle de estoque, folha de ponto, pagamentos e faturamento.</p>
+      <!-- 7 → DIREITA -->
+      <div class="tl-item tl-right reveal-right">
+        <div class="tl-card-box">
+          <h3 class="tl-title">Maluzin Materiais de Construção</h3>
+          <p class="tl-role">Secretária</p>
+          <p class="tl-desc">Atendimento ao cliente, controle de estoque, folha de ponto, pagamentos e faturamento.</p>
+        </div>
+        <div class="tl-year-outer">2012</div>
       </div>
 
-      <div class="tl-item reveal">
-        <p class="tl-period">2010 — 2011</p>
-        <h3 class="tl-title">Fundação Prozee</h3>
-        <p class="tl-role">Entrevistadora Censitária</p>
-        <p class="tl-desc">Cadastros e acompanhamento de dados de pesca — projeto de mapeamento e impacto socioambiental.</p>
+      <!-- 8 → ESQUERDA -->
+      <div class="tl-item tl-left reveal-left">
+        <div class="tl-card-box">
+          <h3 class="tl-title">Fundação Prozee</h3>
+          <p class="tl-role">Entrevistadora Censitária</p>
+          <p class="tl-desc">Cadastros e acompanhamento de dados de pesca — projeto de mapeamento e impacto socioambiental.</p>
+        </div>
+        <div class="tl-year-outer">2010<br/>2011</div>
       </div>
 
-      <div class="tl-item reveal">
-        <p class="tl-period">2009</p>
-        <h3 class="tl-title">TIVIT Terceirização e Serviços Tecnológicos</h3>
-        <p class="tl-role">Teleoperadora</p>
-        <p class="tl-desc">Início de uma carreira marcada pela excelência no relacionamento com o cliente — atendimento ativo e receptivo.</p>
+      <!-- 9 → DIREITA -->
+      <div class="tl-item tl-right reveal-right">
+        <div class="tl-card-box">
+          <h3 class="tl-title">TIVIT Terceirização e Serviços Tecnológicos</h3>
+          <p class="tl-role">Teleoperadora</p>
+          <p class="tl-desc">Início de uma carreira marcada pela excelência no relacionamento com o cliente — atendimento ativo e receptivo.</p>
+        </div>
+        <div class="tl-year-outer">2009</div>
       </div>
 
     </div>
@@ -687,7 +817,8 @@
 
 <!-- ———————————————————— FOOTER ———————————————————— -->
 <footer>
-  © 2026 Taiana de Oliveira Gomes — Todos os direitos reservados
+  © 2026 Taiana de Oliveira Gomes — Todos os direitos reservados<br/>
+  Produzido por <a href="https://vcorpsistem.com" target="_blank" rel="noopener">Vcorp Sistem LTDA</a>
 </footer>
 
 <!-- ———————————————————— SCRIPTS ———————————————————— -->
@@ -741,17 +872,17 @@
     resize(); init(); loop();
   })();
 
-  /* —— Scroll Reveal —— */
-  const reveals = document.querySelectorAll('.reveal');
+  /* —— Scroll Reveal (up + left + right) —— */
+  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry, i) => {
       if (entry.isIntersecting) {
-        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        setTimeout(() => entry.target.classList.add('visible'), i * 60);
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.12 });
-  reveals.forEach(el => observer.observe(el));
+  }, { threshold: 0.1 });
+  revealEls.forEach(el => observer.observe(el));
 
   /* —— Skill Bar Animation —— */
   const barObserver = new IntersectionObserver((entries) => {
