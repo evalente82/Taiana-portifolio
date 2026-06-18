@@ -175,9 +175,83 @@
       max-width: 1000px;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
+      grid-template-columns: 5fr 8fr;
+      gap: 64px;
       align-items: center;
+    }
+
+    /* —— ABOUT PHOTO —— */
+    .about-photo-wrap {
+      position: relative;
+    }
+
+    .about-photo-frame {
+      width: 100%;
+      border-radius: 28px;
+      overflow: hidden;
+      background: linear-gradient(150deg, var(--rose-deep) 0%, var(--rose-light) 60%, #f9c6dd 100%);
+      padding: 3px;
+      box-shadow:
+        0 24px 64px rgba(194,24,91,0.28),
+        0 8px 24px rgba(0,0,0,0.10);
+      transition: box-shadow 0.4s ease, transform 0.4s ease;
+    }
+
+    .about-photo-frame:hover {
+      box-shadow:
+        0 32px 80px rgba(194,24,91,0.38),
+        0 12px 32px rgba(0,0,0,0.12);
+      transform: translateY(-4px);
+    }
+
+    .about-photo-frame img {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      object-position: center top;
+      border-radius: 26px;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+
+    .about-photo-frame:hover img {
+      transform: scale(1.04);
+    }
+
+    .about-photo-badge {
+      position: absolute;
+      bottom: -18px;
+      right: -18px;
+      background: var(--white);
+      border: 2px solid var(--rose-pale);
+      border-radius: 18px;
+      padding: 14px 18px;
+      box-shadow: 0 8px 32px rgba(194,24,91,0.18);
+      text-align: center;
+      z-index: 2;
+    }
+
+    .about-photo-badge .badge-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--rose-deep);
+      line-height: 1;
+    }
+
+    .about-photo-badge .badge-label {
+      font-size: 0.62rem;
+      color: var(--text-light);
+      margin-top: 4px;
+      line-height: 1.4;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .about-right {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
     }
 
     .about-text p {
@@ -538,7 +612,10 @@
 
     /* —— RESPONSIVE —— */
     @media (max-width: 700px) {
-      #about .inner { grid-template-columns: 1fr; gap: 40px; }
+      #about .inner { grid-template-columns: 1fr; gap: 36px; }
+      .about-photo-wrap { max-width: 260px; margin: 0 auto; padding-bottom: 20px; }
+      .about-photo-badge { bottom: -8px; right: -8px; padding: 10px 14px; }
+      .about-photo-badge .badge-num { font-size: 1.2rem; }
       .stat-grid { grid-template-columns: 1fr 1fr; }
 
       /* Timeline: colapsa para coluna única à direita */
@@ -590,30 +667,46 @@
 <!-- ———————————————————— ABOUT ———————————————————— -->
 <section id="about">
   <div class="inner">
-    <div class="about-text reveal">
-      <p class="section-label">Sobre mim</p>
-      <h2 class="section-title">Mulher que constrói, lidera e transforma</h2>
-      <p>Com mais de 15 anos de experiência em gestão, atendimento ao cliente e projetos sociais, Taiana é uma profissional versátil que soube se reinventar em cada etapa da carreira — sempre com excelência e humanidade.</p>
-      <p>De teleoperadora a sócia-gerente, de agente social a mediadora cultural — cada capítulo revela uma liderança genuína e comprometida com resultados reais.</p>
-    </div>
-    <div class="stat-grid">
-      <div class="stat-card reveal">
-        <div class="stat-num">+15</div>
-        <div class="stat-desc">Anos de experiência profissional</div>
+
+    <!-- Foto -->
+    <div class="about-photo-wrap reveal-left">
+      <div class="about-photo-frame">
+        <img src="assets/taiana.png" alt="Taiana de Oliveira Gomes" loading="lazy" />
       </div>
-      <div class="stat-card reveal">
-        <div class="stat-num">6+</div>
-        <div class="stat-desc">Empresas e projetos liderados</div>
-      </div>
-      <div class="stat-card reveal">
-        <div class="stat-num">3</div>
-        <div class="stat-desc">Negócios próprios gerenciados</div>
-      </div>
-      <div class="stat-card reveal">
-        <div class="stat-num">♀</div>
-        <div class="stat-desc">Força feminina em cada projeto</div>
+      <div class="about-photo-badge">
+        <div class="badge-num">+15</div>
+        <div class="badge-label">anos de<br/>experiência</div>
       </div>
     </div>
+
+    <!-- Texto + stats -->
+    <div class="about-right">
+      <div class="about-text reveal">
+        <p class="section-label">Sobre mim</p>
+        <h2 class="section-title">Mulher que constrói, lidera e transforma</h2>
+        <p>Com mais de 15 anos de experiência em gestão, atendimento ao cliente e projetos sociais, Taiana é uma profissional versátil que soube se reinventar em cada etapa da carreira — sempre com excelência e humanidade.</p>
+        <p>De teleoperadora a sócia-gerente, de agente social a mediadora cultural — cada capítulo revela uma liderança genuína e comprometida com resultados reais.</p>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-card reveal">
+          <div class="stat-num">6+</div>
+          <div class="stat-desc">Empresas e projetos liderados</div>
+        </div>
+        <div class="stat-card reveal">
+          <div class="stat-num">3</div>
+          <div class="stat-desc">Negócios próprios gerenciados</div>
+        </div>
+        <div class="stat-card reveal">
+          <div class="stat-num">9+</div>
+          <div class="stat-desc">Funções e cargos de liderança</div>
+        </div>
+        <div class="stat-card reveal">
+          <div class="stat-num">♀</div>
+          <div class="stat-desc">Força feminina em cada projeto</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
